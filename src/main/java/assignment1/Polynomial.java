@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Polynomial {
-    private final static String regex = "(\\+|-)?\\d?x?(\\^\\d)?";
+    private final static String regex = "(\\+|-)?([1-9]\\d*(\\.\\d+)?)?x?(\\^[1-9]\\d*)?";
 
     private Map<Integer, Double> equation;
 
