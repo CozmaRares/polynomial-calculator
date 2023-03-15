@@ -2,13 +2,10 @@ package assignment1;
 
 public class Main {
     public static void main(String[] args) {
-        var p1 = new Polynomial("x^2+1");
-        var p2 = new Polynomial("-2x");
+        var p1 = new Polynomial("x^2");
+        var p2 = new Polynomial("2x");
 
-        System.out.println(p1);
-        System.out.println(p2);
-        System.out.println(p1.integrate());
-        System.out.println(p2.differentiate());
+        System.out.println(p1.divide(p2));
 
         // String[] strs = {
         // "+2.2x^2",

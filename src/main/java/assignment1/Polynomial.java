@@ -1,6 +1,8 @@
 package assignment1;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -10,15 +12,7 @@ public class Polynomial {
     public final static Pattern monomialPattern = Pattern.compile("[-+]?((\\d+(\\.\\d+)?)?x(\\^\\d+)?|\\d+(\\.\\d+)?)");
 
     private Map<Integer, Double> equation;
-
-    private static <K, V> Map<K, V> copyHashMap(Map<K, V> map) {
-        Map<K, V> copy = new HashMap<>();
-
-        for (Map.Entry<K, V> entry : map.entrySet())
-            copy.put(entry.getKey(), entry.getValue());
-
-        return copy;
-    }
+    private int degree;
 
     public Polynomial(String polynomial) {
         this.equation = new HashMap<>();
@@ -63,14 +57,36 @@ public class Polynomial {
 
             this.equation.put(power, coefficient);
         }
+
+        this.remove0s();
+        this.computeDegree();
     }
 
     private Polynomial(Map<Integer, Double> equation) {
-        this.equation = equation;
+        this.equation = new HashMap<>(equation);
+        this.remove0s();
+        this.computeDegree();
+    }
+
+    private Polynomial() {
+        this.equation = new HashMap<>();
+    }
+
+    private void computeDegree() {
+        for (var key : this.equation.keySet())
+            if (key > this.degree)
+                this.degree = key;
+
+    }
+
+    private void remove0s() {
+        for (var entry : this.equation.entrySet())
+            if (entry.getValue() == 0)
+                this.equation.remove(entry.getKey());
     }
 
     public Polynomial add(Polynomial other) {
-        var result = copyHashMap(this.equation);
+        var result = new HashMap<>(this.equation);
 
         for (var entry : other.equation.entrySet()) {
             double value = result.getOrDefault(entry.getKey(), 0d) + entry.getValue();
@@ -82,7 +98,7 @@ public class Polynomial {
     }
 
     public Polynomial subtract(Polynomial other) {
-        var result = copyHashMap(this.equation);
+        var result = new HashMap<>(this.equation);
 
         for (var entry : other.equation.entrySet()) {
             double value = result.getOrDefault(entry.getKey(), 0d) - entry.getValue();
@@ -107,10 +123,25 @@ public class Polynomial {
         return new Polynomial(result);
     }
 
-    public Polynomial divide(Polynomial other) {
-        Map<Integer, Double> result = new HashMap<>();
+    public Collection<Polynomial> divide(Polynomial other) {
+        Polynomial reminder = new Polynomial(this.equation);
+        Polynomial quotient = new Polynomial();
+        Polynomial t;
 
-        return new Polynomial(result);
+        while (reminder.degree != 0 && reminder.degree >= other.degree) {
+            int power = reminder.degree - other.degree;
+            double coefficient = reminder.equation.get(reminder.degree) / other.equation.get(other.degree);
+
+            t = new Polynomial(coefficient + "x^" + power);
+            quotient = quotient.add(t);
+            t = t.multiply(other);
+            reminder = reminder.subtract(t);
+        }
+
+        Collection<Polynomial> c = new ArrayList<>();
+        c.add(quotient);
+        c.add(reminder);
+        return c;
     }
 
     public Polynomial differentiate() {
@@ -122,7 +153,7 @@ public class Polynomial {
             if (power < 0)
                 continue;
 
-            double coefficient = entry.getKey() * entry.getValue();
+            double coefficient = entry.getKey() * entry.getValue() + result.getOrDefault(entry.getKey(), 0d);
 
             result.put(power, coefficient);
         }
@@ -174,6 +205,9 @@ public class Polynomial {
             if (power != 1)
                 out += "^" + power;
         }
+
+        if (out == "")
+            return "0";
 
         return out;
     }
