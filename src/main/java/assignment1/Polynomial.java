@@ -116,11 +116,33 @@ public class Polynomial {
     public Polynomial differentiate() {
         Map<Integer, Double> result = new HashMap<>();
 
+        for (var entry : this.equation.entrySet()) {
+            int power = entry.getKey() - 1;
+
+            if (power < 0)
+                continue;
+
+            double coefficient = entry.getKey() * entry.getValue();
+
+            result.put(power, coefficient);
+        }
+
         return new Polynomial(result);
     }
 
     public Polynomial integrate() {
         Map<Integer, Double> result = new HashMap<>();
+
+        for (var entry : this.equation.entrySet()) {
+            int power = entry.getKey() + 1;
+
+            if (power < 0)
+                continue;
+
+            double coefficient = entry.getValue() / power;
+
+            result.put(power, coefficient);
+        }
 
         return new Polynomial(result);
     }

@@ -7,7 +7,8 @@ public class Main {
 
         System.out.println(p1);
         System.out.println(p2);
-        System.out.println(p1.multiply(p2));
+        System.out.println(p1.integrate());
+        System.out.println(p2.differentiate());
 
         // String[] strs = {
         // "+2.2x^2",
