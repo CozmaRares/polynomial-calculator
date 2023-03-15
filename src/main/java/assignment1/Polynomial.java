@@ -72,7 +72,7 @@ public class Polynomial {
     public Polynomial add(Polynomial other) {
         var result = copyHashMap(this.equation);
 
-        for (Map.Entry<Integer, Double> entry : other.equation.entrySet()) {
+        for (var entry : other.equation.entrySet()) {
             double value = result.getOrDefault(entry.getKey(), 0d) + entry.getValue();
 
             result.put(entry.getKey(), value);
@@ -84,7 +84,7 @@ public class Polynomial {
     public Polynomial subtract(Polynomial other) {
         var result = copyHashMap(this.equation);
 
-        for (Map.Entry<Integer, Double> entry : other.equation.entrySet()) {
+        for (var entry : other.equation.entrySet()) {
             double value = result.getOrDefault(entry.getKey(), 0d) - entry.getValue();
 
             result.put(entry.getKey(), value);
@@ -95,6 +95,14 @@ public class Polynomial {
 
     public Polynomial multiply(Polynomial other) {
         Map<Integer, Double> result = new HashMap<>();
+
+        for (var entry1 : this.equation.entrySet())
+            for (var entry2 : other.equation.entrySet()) {
+                int power = entry1.getKey() + entry2.getKey();
+                double coefficient = entry1.getValue() * entry2.getValue() + result.getOrDefault(power, 0d);
+
+                result.put(power, coefficient);
+            }
 
         return new Polynomial(result);
     }
