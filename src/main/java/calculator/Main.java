@@ -13,28 +13,5 @@ public class Main {
         System.out.println(Division.apply(p1, p2));
         System.out.println(Differentiation.apply(p1));
         System.out.println(Integration.apply(p2));
-
-        // String[] strs = {
-        // "+2.2x^2",
-        // "-2.2x^2",
-        // "2.2x^2",
-        // "+x^2",
-        // "-x^2",
-        // "x^2",
-        // "+2.2x",
-        // "-2.2x",
-        // "2.2x",
-        // "+x",
-        // "-x",
-        // "x",
-        // };
-
-        // for (String str : strs) {
-        // for (String s : str.split("x\\^?"))
-        // System.out.println(s + ", " + s.length());
-
-        // System.out.println();
-        // }
-
     }
 }

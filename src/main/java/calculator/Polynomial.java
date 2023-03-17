@@ -7,7 +7,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Polynomial {
-    public final static Pattern monomialPattern = Pattern.compile("[-+]?((\\d+(\\.\\d+)?)?x(\\^\\d+)?|\\d+(\\.\\d+)?)");
+    private final static String unsignedMonomialRegex = "(\\d+(\\.\\d+)?)?x(\\^\\d+)?|\\d+(\\.\\d+)?";
+
+    private final static Pattern monomialPattern = Pattern
+            .compile(String.format("[-+]?(%s)", unsignedMonomialRegex));
+
+    private final static Pattern polynomialPattern = Pattern
+            .compile(String.format("^-?(%s)([-+](%s))*$", unsignedMonomialRegex, unsignedMonomialRegex));
 
     private Map<Integer, Double> equation;
     private int degree = 0;
@@ -25,10 +31,15 @@ public class Polynomial {
     public Polynomial(final String polynomial) {
         this.equation = new HashMap<>();
 
-        Matcher matcher = monomialPattern.matcher(polynomial);
+        Matcher polynomialMatcher = polynomialPattern.matcher(polynomial);
 
-        while (matcher.find()) {
-            String monomial = matcher.group();
+        if (!polynomialMatcher.find())
+            throw new IllegalArgumentException("'" + polynomial + "' does not represent a valid polynomial");
+
+        Matcher monomialMatcher = monomialPattern.matcher(polynomial);
+
+        while (monomialMatcher.find()) {
+            String monomial = monomialMatcher.group();
 
             int positionOfX = monomial.indexOf("x");
 
