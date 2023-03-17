@@ -14,7 +14,7 @@ public class Polynomial {
     private Map<Integer, Double> equation;
     private int degree;
 
-    public Polynomial(String polynomial) {
+    public Polynomial(final String polynomial) {
         this.equation = new HashMap<>();
 
         Matcher matcher = monomialPattern.matcher(polynomial);
@@ -62,7 +62,7 @@ public class Polynomial {
         this.computeDegree();
     }
 
-    private Polynomial(Map<Integer, Double> equation) {
+    private Polynomial(final Map<Integer, Double> equation) {
         this.equation = new HashMap<>(equation);
         this.remove0s();
         this.computeDegree();
@@ -85,7 +85,7 @@ public class Polynomial {
                 this.equation.remove(entry.getKey());
     }
 
-    public Polynomial add(Polynomial other) {
+    public Polynomial add(final Polynomial other) {
         var result = new HashMap<>(this.equation);
 
         for (var entry : other.equation.entrySet()) {
@@ -97,7 +97,7 @@ public class Polynomial {
         return new Polynomial(result);
     }
 
-    public Polynomial subtract(Polynomial other) {
+    public Polynomial subtract(final Polynomial other) {
         var result = new HashMap<>(this.equation);
 
         for (var entry : other.equation.entrySet()) {
@@ -109,7 +109,7 @@ public class Polynomial {
         return new Polynomial(result);
     }
 
-    public Polynomial multiply(Polynomial other) {
+    public Polynomial multiply(final Polynomial other) {
         Map<Integer, Double> result = new HashMap<>();
 
         for (var entry1 : this.equation.entrySet())
@@ -123,7 +123,7 @@ public class Polynomial {
         return new Polynomial(result);
     }
 
-    public Collection<Polynomial> divide(Polynomial other) {
+    public Collection<Polynomial> divide(final Polynomial other) {
         Polynomial reminder = new Polynomial(this.equation);
         Polynomial quotient = new Polynomial();
         Polynomial t;
