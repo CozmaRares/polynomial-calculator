@@ -5,8 +5,8 @@ import calculator.model.operations.*;
 
 public class Main {
     public static void main(String[] args) {
-        var p1 = new Polynomial("x^2");
-        var p2 = new Polynomial("2x");
+        var p1 = new Polynomial("x");
+        var p2 = new Polynomial("x");
 
         System.out.println(Addition.apply(p1, p2));
         System.out.println(Subtraction.apply(p1, p2));

@@ -19,6 +19,15 @@ public class Polynomial {
     private final Map<Integer, BigDecimal> monomials;
     private final int degree;
 
+    private static void stripTrailingZeros(Map<Integer, BigDecimal> monomials) {
+        for (var entry : monomials.entrySet())
+            entry.setValue(entry.getValue().stripTrailingZeros());
+    }
+
+    private static void remove0s(Map<Integer, BigDecimal> monomials) {
+        monomials.entrySet().removeIf(e -> e.getValue().equals(BigDecimal.ZERO));
+    }
+
     private static int computeDegree(Map<Integer, BigDecimal> monomials) {
         int degree = 0;
 
@@ -40,7 +49,8 @@ public class Polynomial {
 
     public Polynomial(final Map<Integer, BigDecimal> monomials) {
         this.monomials = new HashMap<>(monomials);
-        this.remove0s();
+        Polynomial.stripTrailingZeros(this.monomials);
+        Polynomial.remove0s(this.monomials);
         this.degree = Polynomial.computeDegree(this.monomials);
     }
 
@@ -97,12 +107,9 @@ public class Polynomial {
             this.addMonomial(power, coefficient);
         }
 
-        this.remove0s();
+        Polynomial.stripTrailingZeros(this.monomials);
+        Polynomial.remove0s(this.monomials);
         this.degree = Polynomial.computeDegree(this.monomials);
-    }
-
-    private void remove0s() {
-        this.monomials.entrySet().removeIf(e -> e.getValue().stripTrailingZeros().equals(BigDecimal.ZERO));
     }
 
     private void addMonomial(int power, BigDecimal coefficient) {
