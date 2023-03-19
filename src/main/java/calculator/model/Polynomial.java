@@ -64,9 +64,9 @@ public class Polynomial {
 
             if (positionOfX == -1) {
                 power = 0;
-                coefficient = new BigDecimal(monomial).add(this.monomials.getOrDefault(power, BigDecimal.ZERO));
+                coefficient = new BigDecimal(monomial);
 
-                this.monomials.put(power, coefficient);
+                this.addMonomial(power, coefficient);
                 continue;
             }
 
@@ -74,9 +74,9 @@ public class Polynomial {
 
             if (numbers.length == 0) {
                 power = 1;
-                coefficient = BigDecimal.ONE.add(this.monomials.getOrDefault(power, BigDecimal.ZERO));
+                coefficient = BigDecimal.ONE;
 
-                this.monomials.put(power, coefficient);
+                this.addMonomial(power, coefficient);
                 continue;
             }
 
@@ -93,9 +93,8 @@ public class Polynomial {
                 coefficient = new BigDecimal(coefficientString);
 
             power = numbers.length == 1 ? 1 : Integer.parseInt(numbers[1]);
-            coefficient = coefficient.add(this.monomials.getOrDefault(power, BigDecimal.ZERO));
 
-            this.monomials.put(power, coefficient);
+            this.addMonomial(power, coefficient);
         }
 
         this.remove0s();
@@ -104,6 +103,12 @@ public class Polynomial {
 
     private void remove0s() {
         this.monomials.entrySet().removeIf(e -> e.getValue().stripTrailingZeros().equals(BigDecimal.ZERO));
+    }
+
+    private void addMonomial(int power, BigDecimal coefficient) {
+        coefficient = this.getCoefficient(power).add(coefficient);
+
+        this.monomials.put(power, coefficient);
     }
 
     public Set<Integer> getPowerSet() {
