@@ -1,6 +1,6 @@
 package calculator.model;
 
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -16,8 +16,18 @@ public class Polynomial {
     private final static Pattern polynomialPattern = Pattern
             .compile(String.format("^-?(%s)([-+](%s))*$", unsignedMonomialRegex, unsignedMonomialRegex));
 
-    private Map<Integer, Double> monomials;
-    private int degree;
+    private final Map<Integer, BigDecimal> monomials;
+    private final int degree;
+
+    private static int computeDegree(Map<Integer, BigDecimal> monomials) {
+        int degree = 0;
+
+        for (var key : monomials.keySet())
+            if (key > degree)
+                degree = key;
+
+        return degree;
+    }
 
     public static Polynomial clone(Polynomial p) {
         return new Polynomial(p.monomials);
@@ -25,13 +35,13 @@ public class Polynomial {
 
     public Polynomial() {
         this.monomials = new HashMap<>();
-        this.computeDegree();
+        this.degree = 0;
     }
 
-    public Polynomial(final Map<Integer, Double> equation) {
-        this.monomials = new HashMap<>(equation);
+    public Polynomial(final Map<Integer, BigDecimal> monomials) {
+        this.monomials = new HashMap<>(monomials);
         this.remove0s();
-        this.computeDegree();
+        this.degree = Polynomial.computeDegree(this.monomials);
     }
 
     public Polynomial(final String polynomial) {
@@ -50,11 +60,12 @@ public class Polynomial {
             int positionOfX = monomial.indexOf("x");
 
             int power;
-            double coefficient;
+            BigDecimal coefficient;
 
             if (positionOfX == -1) {
                 power = 0;
-                coefficient = Double.parseDouble(monomial) + this.monomials.getOrDefault(power, 0d);
+                coefficient = new BigDecimal(monomial).add(this.monomials.getOrDefault(power, BigDecimal.ZERO));
+
                 this.monomials.put(power, coefficient);
                 continue;
             }
@@ -63,7 +74,8 @@ public class Polynomial {
 
             if (numbers.length == 0) {
                 power = 1;
-                coefficient = 1 + this.monomials.getOrDefault(power, 0d);
+                coefficient = BigDecimal.ONE.add(this.monomials.getOrDefault(power, BigDecimal.ZERO));
+
                 this.monomials.put(power, coefficient);
                 continue;
             }
@@ -71,43 +83,35 @@ public class Polynomial {
             String coefficientString = numbers[0];
 
             if (coefficientString.length() == 0)
-                coefficient = 1;
-            else if (coefficientString.length() == 1 && "+-".indexOf(coefficientString.charAt(0)) != -1)
-                coefficient = coefficientString.charAt(0) == '+' ? 1 : -1;
-            else
-                coefficient = Double.parseDouble(coefficientString);
+                coefficient = BigDecimal.ONE;
+            else if (coefficientString.length() == 1 && "+-".indexOf(coefficientString.charAt(0)) != -1) {
+                coefficient = BigDecimal.ONE;
+
+                if (coefficientString.charAt(0) == '-')
+                    coefficient = coefficient.multiply(BigDecimal.valueOf(-1));
+            } else
+                coefficient = new BigDecimal(coefficientString);
 
             power = numbers.length == 1 ? 1 : Integer.parseInt(numbers[1]);
-            coefficient += this.monomials.getOrDefault(power, 0d);
+            coefficient = coefficient.add(this.monomials.getOrDefault(power, BigDecimal.ZERO));
 
             this.monomials.put(power, coefficient);
         }
 
         this.remove0s();
-        this.computeDegree();
-    }
-
-    private void computeDegree() {
-        this.degree = 0;
-
-        for (var key : this.monomials.keySet())
-            if (key > this.degree)
-                this.degree = key;
-
+        this.degree = Polynomial.computeDegree(this.monomials);
     }
 
     private void remove0s() {
-        for (var entry : this.monomials.entrySet())
-            if (entry.getValue() == 0)
-                this.monomials.remove(entry.getKey());
+        this.monomials.entrySet().removeIf(e -> e.getValue().stripTrailingZeros().equals(BigDecimal.ZERO));
     }
 
     public Set<Integer> getPowerSet() {
         return this.monomials.keySet();
     }
 
-    public double getCoefficient(int power) {
-        return this.monomials.getOrDefault(power, 0d);
+    public BigDecimal getCoefficient(int power) {
+        return this.monomials.getOrDefault(power, BigDecimal.ZERO);
     }
 
     public int getDegree() {
@@ -116,25 +120,22 @@ public class Polynomial {
 
     @Override
     public String toString() {
-        DecimalFormat format = new DecimalFormat("0.#");
-
         String out = "";
 
         for (var entry : this.monomials.entrySet()) {
             int power = entry.getKey();
-            double coefficient = entry.getValue();
-            String formattedCoefficient = format.format(coefficient);
+            BigDecimal coefficient = entry.getValue();
 
             if (power == 0) {
-                out += formattedCoefficient;
+                out += coefficient;
                 continue;
             }
 
-            if (coefficient > 0 && out.length() != 0)
+            if (coefficient.compareTo(BigDecimal.ZERO) > 0 && out.length() != 0)
                 out += "+";
 
-            if (coefficient != 1)
-                out += formattedCoefficient;
+            if (!coefficient.equals(BigDecimal.ONE))
+                out += coefficient;
 
             out += "x";
 

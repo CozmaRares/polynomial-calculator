@@ -1,5 +1,6 @@
 package calculator.model.operations;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,8 +16,8 @@ public class Division {
 
         while (reminder.getDegree() != 0 && reminder.getDegree() >= second.getDegree()) {
             int power = reminder.getDegree() - second.getDegree();
-            double coefficient = reminder.getCoefficient(reminder.getDegree()) /
-                    second.getCoefficient(second.getDegree());
+            BigDecimal coefficient = reminder.getCoefficient(reminder.getDegree())
+                    .divide(second.getCoefficient(second.getDegree()));
 
             Polynomial t = new Polynomial(coefficient + "x^" + power);
             quotient = Addition.apply(quotient, t);

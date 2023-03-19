@@ -1,7 +1,7 @@
 package calculator.model.operations;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.Map;
 
 import calculator.model.Polynomial;
 
@@ -10,13 +10,16 @@ public class Differentiation {
     }
 
     public static Polynomial apply(Polynomial polynomial) {
-        Map<Integer, Double> result = new HashMap<>();
+        var result = new HashMap<Integer, BigDecimal>();
 
         for (int power : polynomial.getPowerSet()) {
             if (power < 1)
                 continue;
 
-            double coefficient = power * polynomial.getCoefficient(power) + result.getOrDefault(power, 0d);
+            BigDecimal coefficient = polynomial
+                    .getCoefficient(power)
+                    .multiply(BigDecimal.valueOf(power))
+                    .add(result.getOrDefault(power, BigDecimal.ZERO));
 
             result.put(power - 1, coefficient);
         }
