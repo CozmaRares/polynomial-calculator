@@ -1,9 +1,9 @@
-package calculator.operations;
+package calculator.model.operations;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import calculator.Polynomial;
+import calculator.model.Polynomial;
 
 public class Division {
     private Division() {

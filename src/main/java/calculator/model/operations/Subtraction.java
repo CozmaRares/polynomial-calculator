@@ -1,8 +1,8 @@
-package calculator.operations;
+package calculator.model.operations;
 
 import java.util.HashMap;
 
-import calculator.Polynomial;
+import calculator.model.Polynomial;
 
 public class Subtraction {
     private Subtraction() {

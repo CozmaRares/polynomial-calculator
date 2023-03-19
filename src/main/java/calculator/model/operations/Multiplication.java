@@ -1,9 +1,9 @@
-package calculator.operations;
+package calculator.model.operations;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import calculator.Polynomial;
+import calculator.model.Polynomial;
 
 public class Multiplication {
     private Multiplication() {
