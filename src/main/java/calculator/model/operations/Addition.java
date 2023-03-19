@@ -9,15 +9,17 @@ public class Addition {
     }
 
     public static Polynomial apply(Polynomial first, Polynomial second) {
-        var result = new HashMap<>(first.getEquation());
+        var result = new HashMap<Integer, Double>();
 
-        for (var entry : second.getEquation().entrySet()) {
-            double value = result.getOrDefault(entry.getKey(), 0d) + entry.getValue();
+        for (int power : first.getPowerSet())
+            result.put(power, first.getCoefficient(power));
 
-            result.put(entry.getKey(), value);
+        for (int power : second.getPowerSet()) {
+            double coefficient = result.getOrDefault(power, 0d) + second.getCoefficient(power);
+
+            result.put(power, coefficient);
         }
 
         return new Polynomial(result);
     }
-
 }

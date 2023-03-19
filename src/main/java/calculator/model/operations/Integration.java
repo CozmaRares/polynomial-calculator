@@ -12,13 +12,10 @@ public class Integration {
     public static Polynomial apply(Polynomial polynomial) {
         Map<Integer, Double> result = new HashMap<>();
 
-        for (var entry : polynomial.getEquation().entrySet()) {
-            int power = entry.getKey() + 1;
+        for (int power : polynomial.getPowerSet()) {
+            power++;
 
-            if (power < 0)
-                continue;
-
-            double coefficient = entry.getValue() / power;
+            double coefficient = polynomial.getCoefficient(power - 1) / power;
 
             result.put(power, coefficient);
         }

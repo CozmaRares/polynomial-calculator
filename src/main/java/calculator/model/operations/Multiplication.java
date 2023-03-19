@@ -12,10 +12,11 @@ public class Multiplication {
     public static Polynomial apply(Polynomial first, Polynomial second) {
         Map<Integer, Double> result = new HashMap<>();
 
-        for (var entry1 : first.getEquation().entrySet())
-            for (var entry2 : second.getEquation().entrySet()) {
-                int power = entry1.getKey() + entry2.getKey();
-                double coefficient = entry1.getValue() * entry2.getValue() + result.getOrDefault(power, 0d);
+        for (int power1 : first.getPowerSet())
+            for (int power2 : second.getPowerSet()) {
+                int power = power1 + power2;
+                double coefficient = first.getCoefficient(power1) * second.getCoefficient(power2)
+                        + result.getOrDefault(power, 0d);
 
                 result.put(power, coefficient);
             }

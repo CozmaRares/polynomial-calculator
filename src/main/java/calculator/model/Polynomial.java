@@ -3,6 +3,7 @@ package calculator.model;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,21 +16,26 @@ public class Polynomial {
     private final static Pattern polynomialPattern = Pattern
             .compile(String.format("^-?(%s)([-+](%s))*$", unsignedMonomialRegex, unsignedMonomialRegex));
 
-    private Map<Integer, Double> equation;
-    private int degree = 0;
+    private Map<Integer, Double> monomials;
+    private int degree;
+
+    public static Polynomial clone(Polynomial p) {
+        return new Polynomial(p.monomials);
+    }
 
     public Polynomial() {
-        this.equation = new HashMap<>();
+        this.monomials = new HashMap<>();
+        this.computeDegree();
     }
 
     public Polynomial(final Map<Integer, Double> equation) {
-        this.equation = new HashMap<>(equation);
+        this.monomials = new HashMap<>(equation);
         this.remove0s();
         this.computeDegree();
     }
 
     public Polynomial(final String polynomial) {
-        this.equation = new HashMap<>();
+        this.monomials = new HashMap<>();
 
         Matcher polynomialMatcher = polynomialPattern.matcher(polynomial);
 
@@ -48,8 +54,8 @@ public class Polynomial {
 
             if (positionOfX == -1) {
                 power = 0;
-                coefficient = Double.parseDouble(monomial) + this.equation.getOrDefault(power, 0d);
-                this.equation.put(power, coefficient);
+                coefficient = Double.parseDouble(monomial) + this.monomials.getOrDefault(power, 0d);
+                this.monomials.put(power, coefficient);
                 continue;
             }
 
@@ -57,8 +63,8 @@ public class Polynomial {
 
             if (numbers.length == 0) {
                 power = 1;
-                coefficient = 1 + this.equation.getOrDefault(power, 0d);
-                this.equation.put(power, coefficient);
+                coefficient = 1 + this.monomials.getOrDefault(power, 0d);
+                this.monomials.put(power, coefficient);
                 continue;
             }
 
@@ -72,9 +78,9 @@ public class Polynomial {
                 coefficient = Double.parseDouble(coefficientString);
 
             power = numbers.length == 1 ? 1 : Integer.parseInt(numbers[1]);
-            coefficient += this.equation.getOrDefault(power, 0d);
+            coefficient += this.monomials.getOrDefault(power, 0d);
 
-            this.equation.put(power, coefficient);
+            this.monomials.put(power, coefficient);
         }
 
         this.remove0s();
@@ -82,20 +88,26 @@ public class Polynomial {
     }
 
     private void computeDegree() {
-        for (var key : this.equation.keySet())
+        this.degree = 0;
+
+        for (var key : this.monomials.keySet())
             if (key > this.degree)
                 this.degree = key;
 
     }
 
     private void remove0s() {
-        for (var entry : this.equation.entrySet())
+        for (var entry : this.monomials.entrySet())
             if (entry.getValue() == 0)
-                this.equation.remove(entry.getKey());
+                this.monomials.remove(entry.getKey());
     }
 
-    public Map<Integer, Double> getEquation() {
-        return this.equation;
+    public Set<Integer> getPowerSet() {
+        return this.monomials.keySet();
+    }
+
+    public double getCoefficient(int power) {
+        return this.monomials.getOrDefault(power, 0d);
     }
 
     public int getDegree() {
@@ -108,7 +120,7 @@ public class Polynomial {
 
         String out = "";
 
-        for (var entry : this.equation.entrySet()) {
+        for (var entry : this.monomials.entrySet()) {
             int power = entry.getKey();
             double coefficient = entry.getValue();
             String formattedCoefficient = format.format(coefficient);
