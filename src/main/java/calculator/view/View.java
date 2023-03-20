@@ -1,8 +1,13 @@
 package calculator.view;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
+
+import calculator.model.Polynomial;
+import calculator.model.operations.*;
 
 public class View extends JFrame {
     private JTextField firstPolynomialField;
@@ -56,5 +61,110 @@ public class View extends JFrame {
         this.setLayout(null);
         this.setSize(500, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        this.addActionListeners();
+
     }
+
+    private void addActionListeners() {
+
+        this.addButton.addActionListener(wrapActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Polynomial first = getFirstPolynomial();
+                Polynomial second = getSecondPolynomial();
+
+                var res = Addition.apply(first, second);
+
+                new Popup("First: " + first, "Second: " + second, "Result: " + res);
+            }
+        }));
+
+        this.subtractButton.addActionListener(wrapActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Polynomial first = getFirstPolynomial();
+                Polynomial second = getSecondPolynomial();
+
+                var res = Subtraction.apply(first, second);
+
+                new Popup("First: " + first, "Second: " + second, "Result: " + res);
+            }
+        }));
+
+        this.multiplyButton.addActionListener(wrapActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Polynomial first = getFirstPolynomial();
+                Polynomial second = getSecondPolynomial();
+
+                var res = Multiplication.apply(first, second);
+
+                new Popup("First: " + first, "Second: " + second, "Result: " + res);
+            }
+        }));
+
+        this.divideButton.addActionListener(wrapActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Polynomial first = getFirstPolynomial();
+                Polynomial second = getSecondPolynomial();
+
+                var res = Division.apply(first, second);
+
+                new Popup("First: " + first, "Second: " + second, "Quotient: " + res.get(0), "Reminder: " + res.get(1));
+            }
+        }));
+
+        this.integrateButton.addActionListener(wrapActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Polynomial first = getFirstPolynomial();
+                Polynomial second = getSecondPolynomial();
+
+                var res1 = Integration.apply(first);
+                var res2 = Integration.apply(second);
+
+                new Popup("First: " + first, "Integrated: " + res1, "",
+                        "Second: " + second, "Integrated: " + res2);
+            }
+        }));
+
+        this.differentiateButton.addActionListener(wrapActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Polynomial first = getFirstPolynomial();
+                Polynomial second = getSecondPolynomial();
+
+                var res1 = Differentiation.apply(first);
+                var res2 = Differentiation.apply(second);
+
+                new Popup("First: " + first, "Differentiated: " + res1, "",
+                        "Second: " + second, "Differentiated: " + res2);
+            }
+        }));
+    }
+
+    private Polynomial getFirstPolynomial() {
+        return new Polynomial(this.firstPolynomialField.getText());
+    }
+
+    private Polynomial getSecondPolynomial() {
+        return new Polynomial(this.secondPolynomialField.getText());
+    }
+
+    private ActionListener wrapActionListener(ActionListener listener) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                try {
+                    listener.actionPerformed(event);
+                } catch (IllegalArgumentException exception) {
+                    new Popup(exception.getMessage());
+                }
+            }
+
+        };
+    }
+
 }

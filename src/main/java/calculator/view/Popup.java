@@ -1,5 +1,7 @@
 package calculator.view;
 
+import java.awt.Font;
+
 import javax.swing.*;
 
 public class Popup extends JFrame {
@@ -9,6 +11,7 @@ public class Popup extends JFrame {
         for (String line : lines) {
             JLabel textLabel = new JLabel(line);
             textLabel.setBounds(0, 35 * idx, 300, 30);
+            textLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
             this.add(textLabel);
             idx++;
         }

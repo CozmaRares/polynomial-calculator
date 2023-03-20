@@ -132,6 +132,7 @@ public class Polynomial {
 
     @Override
     public String toString() {
+        // TODO: refactor to StringBuilder
         String out = "";
 
         for (var entry : this.monomials.entrySet()) {
@@ -139,15 +140,17 @@ public class Polynomial {
             BigDecimal coefficient = entry.getValue();
 
             if (power == 0) {
-                out += coefficient;
+                out += coefficient.toPlainString();
                 continue;
             }
 
             if (coefficient.compareTo(BigDecimal.ZERO) > 0 && out.length() != 0)
                 out += "+";
+            else if (coefficient.equals(BigDecimal.ONE.negate()))
+                out += "-";
 
-            if (!coefficient.equals(BigDecimal.ONE))
-                out += coefficient;
+            if (!coefficient.abs().equals(BigDecimal.ONE))
+                out += coefficient.toPlainString();
 
             out += "x";
 
