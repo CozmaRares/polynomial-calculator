@@ -1,8 +1,8 @@
 package calculator.model.operations;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.List;
 
 import calculator.model.Polynomial;
 
@@ -10,7 +10,7 @@ public class Division {
     private Division() {
     }
 
-    public static Collection<Polynomial> apply(Polynomial first, Polynomial second) {
+    public static List<Polynomial> apply(Polynomial first, Polynomial second) {
         Polynomial reminder = Polynomial.clone(first);
         Polynomial quotient = new Polynomial();
 
@@ -25,9 +25,7 @@ public class Division {
             reminder = Subtraction.apply(reminder, t);
         }
 
-        Collection<Polynomial> c = new ArrayList<>();
-        c.add(quotient);
-        c.add(reminder);
+        var c = Arrays.asList(quotient, reminder);
         return c;
     }
 }

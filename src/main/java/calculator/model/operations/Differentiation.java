@@ -26,5 +26,4 @@ public class Differentiation {
 
         return new Polynomial(result);
     }
-
 }
