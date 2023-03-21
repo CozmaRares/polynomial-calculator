@@ -1,11 +1,9 @@
 package calculator;
 
-import calculator.view.View;
+import calculator.controller.Controller;
 
 public class Main {
     public static void main(String[] args) {
-        var v = new View();
-
-        v.setVisible(true);
+        new Controller();
     }
 }
