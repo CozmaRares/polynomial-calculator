@@ -133,35 +133,34 @@ public class Polynomial {
 
     @Override
     public String toString() {
-        // TODO: refactor to StringBuilder
-        String out = "";
+        StringBuilder sb = new StringBuilder();
 
         for (var entry : this.monomials.entrySet()) {
             int power = entry.getKey();
             Decimal coefficient = entry.getValue();
 
             if (power == 0) {
-                out += coefficient;
+                sb.append(coefficient);
                 continue;
             }
 
-            if (coefficient.greaterThan(Decimal.ZERO) && out.length() != 0)
-                out += "+";
+            if (coefficient.greaterThan(Decimal.ZERO) && sb.length() != 0)
+                sb.append("+");
             else if (coefficient.equalTo(Decimal.ONE.negate()))
-                out += "-";
+                sb.append("-");
 
             if (!coefficient.abs().equalTo(Decimal.ONE))
-                out += coefficient;
+                sb.append(coefficient);
 
-            out += "x";
+            sb.append("x");
 
             if (power != 1)
-                out += "^" + power;
+                sb.append("^" + power);
         }
 
-        if (out == "")
+        if(sb.length() == 0)
             return "0";
 
-        return out;
+        return sb.toString();
     }
 }
