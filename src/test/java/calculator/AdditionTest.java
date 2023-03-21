@@ -31,6 +31,6 @@ public class AdditionTest {
         // ------------------------------------------------
         // -x^5 - 0.0714x^4 - 4.5x^3 - 3.9147x^2 ___ + 47
 
-        assertEquals("-x^5-0.0714x^4-4.5x^3-3.9147x^2+47", Addition.apply(p1, p2).toString());
+        assertEquals("-x^5-0.071x^4-4.5x^3-3.915x^2+47", Addition.apply(p1, p2).toString());
     }
 }
