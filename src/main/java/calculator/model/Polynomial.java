@@ -31,7 +31,7 @@ public class Polynomial {
     }
 
     private static int computeDegree(Map<Integer, Decimal> monomials) {
-        int degree = 0;
+        int degree = -1;
 
         for (var key : monomials.keySet())
             if (key > degree)
@@ -42,7 +42,7 @@ public class Polynomial {
 
     public Polynomial() {
         this.monomials = new HashMap<>();
-        this.degree = 0;
+        this.degree = Polynomial.computeDegree(this.monomials);
     }
 
     public Polynomial(final Map<Integer, Decimal> monomials) {
@@ -134,6 +134,9 @@ public class Polynomial {
 
     @Override
     public String toString() {
+        if (this.degree == -1)
+            return "0";
+
         StringBuilder sb = new StringBuilder();
 
         var sortedMonomials = new ArrayList<>(this.monomials.entrySet());
@@ -161,9 +164,6 @@ public class Polynomial {
             if (power != 1)
                 sb.append("^" + power);
         }
-
-        if (sb.length() == 0)
-            return "0";
 
         return sb.toString();
     }

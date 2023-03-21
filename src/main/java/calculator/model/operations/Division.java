@@ -11,6 +11,9 @@ public class Division {
     }
 
     public static List<Polynomial> apply(Polynomial first, Polynomial second) {
+        if (second.getDegree() == -1)
+            throw new IllegalArgumentException("Cannot divide by 0");
+
         Polynomial reminder = new Polynomial(first);
         Polynomial quotient = new Polynomial();
 
