@@ -89,6 +89,22 @@ public class PolynomialTest {
     }
 
     @Test
+    public void readCoefficientShouldBeStrippedOfZeros() {
+        var p = new Polynomial("2.00");
+
+        assertEquals("2", p.toString());
+        assertEquals(0, p.getDegree());
+    }
+
+    @Test
+    public void strippingZerosFromCoefficientsShouldNotAffectMultiplesOfTen() {
+        var p = new Polynomial("40");
+
+        assertEquals("40", p.toString());
+        assertEquals(0, p.getDegree());
+    }
+
+    @Test
     public void polynomialShouldBeCorrectlyParsed() {
         var p = new Polynomial("x^2+2x+1");
 
