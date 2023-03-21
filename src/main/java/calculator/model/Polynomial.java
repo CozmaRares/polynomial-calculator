@@ -39,10 +39,6 @@ public class Polynomial {
         return degree;
     }
 
-    public static Polynomial clone(Polynomial p) {
-        return new Polynomial(p.monomials);
-    }
-
     public Polynomial() {
         this.monomials = new HashMap<>();
         this.degree = 0;
@@ -53,6 +49,10 @@ public class Polynomial {
         Polynomial.stripTrailingZeros(this.monomials);
         Polynomial.remove0s(this.monomials);
         this.degree = Polynomial.computeDegree(this.monomials);
+    }
+
+    public Polynomial(final Polynomial p) {
+        this(p.monomials);
     }
 
     public Polynomial(final String polynomial) {
@@ -158,7 +158,7 @@ public class Polynomial {
                 sb.append("^" + power);
         }
 
-        if(sb.length() == 0)
+        if (sb.length() == 0)
             return "0";
 
         return sb.toString();

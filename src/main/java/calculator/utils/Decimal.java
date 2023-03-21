@@ -27,27 +27,27 @@ public class Decimal extends BigDecimal {
         super(val.unscaledValue(), val.scale());
     }
 
-    public boolean equalTo(Decimal decimal) {
+    public boolean equalTo(BigDecimal decimal) {
         return this
                 .subtract(decimal)
                 .abs()
                 .compareTo(Decimal.ALMOST_ZERO) < 0;
     }
 
-    public boolean greaterOrEqualTo(BigDecimal decimal) {
-        return this.compareTo(decimal) >= 0;
-    }
-
-    public boolean lessOrEqualTo(BigDecimal decimal) {
-        return this.compareTo(decimal) <= 0;
-    }
-
     public boolean greaterThan(BigDecimal decimal) {
         return this.compareTo(decimal) > 0;
     }
 
+    public boolean greaterOrEqualTo(BigDecimal decimal) {
+        return this.greaterThan(decimal) || this.equalTo(decimal);
+    }
+
     public boolean lessThan(BigDecimal decimal) {
         return this.compareTo(decimal) < 0;
+    }
+
+    public boolean lessOrEqualTo(BigDecimal decimal) {
+        return this.lessThan(decimal) || this.equalTo(decimal);
     }
 
     @Override

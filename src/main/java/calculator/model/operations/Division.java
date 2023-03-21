@@ -11,7 +11,7 @@ public class Division {
     }
 
     public static List<Polynomial> apply(Polynomial first, Polynomial second) {
-        Polynomial reminder = Polynomial.clone(first);
+        Polynomial reminder = new Polynomial(first);
         Polynomial quotient = new Polynomial();
 
         while (reminder.getDegree() != 0 && reminder.getDegree() >= second.getDegree()) {
