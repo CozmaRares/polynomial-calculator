@@ -1,25 +1,25 @@
 package calculator.model.operations;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 
 import calculator.model.Polynomial;
+import calculator.utils.Decimal;
 
 public class Differentiation {
     private Differentiation() {
     }
 
     public static Polynomial apply(Polynomial polynomial) {
-        var result = new HashMap<Integer, BigDecimal>();
+        var result = new HashMap<Integer, Decimal>();
 
         for (int power : polynomial.getPowerSet()) {
             if (power < 1)
                 continue;
 
-            BigDecimal coefficient = polynomial
+            Decimal coefficient = polynomial
                     .getCoefficient(power)
-                    .multiply(BigDecimal.valueOf(power))
-                    .add(result.getOrDefault(power, BigDecimal.ZERO));
+                    .multiply(Decimal.valueOf(power))
+                    .add(result.getOrDefault(power, Decimal.ZERO));
 
             result.put(power - 1, coefficient);
         }

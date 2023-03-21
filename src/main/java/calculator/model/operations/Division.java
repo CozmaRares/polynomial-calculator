@@ -16,7 +16,8 @@ public class Division {
 
         while (reminder.getDegree() != 0 && reminder.getDegree() >= second.getDegree()) {
             int power = reminder.getDegree() - second.getDegree();
-            BigDecimal coefficient = reminder.getCoefficient(reminder.getDegree())
+            BigDecimal coefficient = reminder
+                    .getCoefficient(reminder.getDegree())
                     .divide(second.getCoefficient(second.getDegree()));
 
             Polynomial t = new Polynomial(coefficient + "x^" + power);
