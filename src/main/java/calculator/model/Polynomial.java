@@ -1,5 +1,6 @@
 package calculator.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -135,19 +136,22 @@ public class Polynomial {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        for (var entry : this.monomials.entrySet()) {
+        var sortedMonomials = new ArrayList<>(this.monomials.entrySet());
+        sortedMonomials.sort((e1, e2) -> e2.getKey() - e1.getKey());
+
+        for (var entry : sortedMonomials) {
             int power = entry.getKey();
             Decimal coefficient = entry.getValue();
-
-            if (power == 0) {
-                sb.append(coefficient);
-                continue;
-            }
 
             if (coefficient.greaterThan(Decimal.ZERO) && sb.length() != 0)
                 sb.append("+");
             else if (coefficient.equalTo(Decimal.ONE.negate()))
                 sb.append("-");
+
+            if (power == 0) {
+                sb.append(coefficient);
+                continue;
+            }
 
             if (!coefficient.abs().equalTo(Decimal.ONE))
                 sb.append(coefficient);
