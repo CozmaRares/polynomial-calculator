@@ -7,6 +7,11 @@ import calculator.model.Polynomial;
 
 public class PolynomialTest {
     @Test(expected = IllegalArgumentException.class)
+    public void mustHaveDigitsBeforeDecimalPoint() {
+        Polynomial.fromString(".2x");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void firstMonomialStartingWithPlusShouldThrow() {
         Polynomial.fromString("+2x^2");
     }
@@ -52,7 +57,7 @@ public class PolynomialTest {
     }
 
     @Test
-    public void monomialWithoutPowerAndWithoutCoefficientShouldBeAccepted() {
+    public void xShouldBeAccepted() {
         var p = Polynomial.fromString("x");
 
         assertEquals("x", p.toString());
@@ -108,16 +113,12 @@ public class PolynomialTest {
     public void polynomialShouldBeCorrectlyParsed() {
         var p = Polynomial.fromString("x^2+2x+1");
 
-        System.out.println(p);
-
         assertEquals("x^2+2x+1", p.toString());
     }
 
     @Test
-    public void polynomialWithRealCoefficientShouldBeCorrectlyParsed() {
+    public void polynomialWithRealAndNegativeCoefficientShouldBeCorrectlyParsed() {
         var p = Polynomial.fromString("-x^2+2.2x+1");
-
-        System.out.println(p);
 
         assertEquals("-x^2+2.2x+1", p.toString());
     }

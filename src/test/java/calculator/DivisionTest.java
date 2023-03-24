@@ -35,4 +35,22 @@ public class DivisionTest {
         assertEquals("5x+1.5", res.get(0).toString());
         assertEquals("7.5", res.get(1).toString());
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void divideByHigherDegree() {
+        var p1 = Polynomial.fromString("x");
+        var p2 = Polynomial.fromString("x^2");
+
+        Division.apply(p1, p2);
+    }
+
+    @Test
+    public void coefficientWithPeriodicDecimal() {
+        var p1 = Polynomial.fromString("x^2");
+        var p2 = Polynomial.fromString("3x");
+        var res = Division.apply(p1, p2);
+
+        assertEquals("0.333x", res.get(0).toString());
+        assertEquals("0", res.get(1).toString());
+    }
 }

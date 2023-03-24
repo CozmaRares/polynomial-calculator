@@ -11,62 +11,62 @@ public class Decimal extends BigDecimal {
     public static final Decimal ZERO = new Decimal(BigDecimal.ZERO);
     public static final Decimal ONE = new Decimal(BigDecimal.ONE);
 
-    public Decimal(int val) {
+    public Decimal(final int val) {
         super(val);
     }
 
-    public Decimal(double val) {
+    public Decimal(final double val) {
         super(Double.toString(val));
     }
 
-    public Decimal(String val) {
+    public Decimal(final String val) {
         super(val);
     }
 
-    public Decimal(BigDecimal val) {
+    public Decimal(final BigDecimal val) {
         super(val.unscaledValue(), val.scale());
     }
 
-    public boolean equalTo(BigDecimal decimal) {
+    public boolean equalTo(final BigDecimal decimal) {
         return this
                 .subtract(decimal)
                 .abs()
                 .compareTo(Decimal.ALMOST_ZERO) < 0;
     }
 
-    public boolean greaterThan(BigDecimal decimal) {
+    public boolean greaterThan(final BigDecimal decimal) {
         return this.compareTo(decimal) > 0;
     }
 
-    public boolean greaterOrEqualTo(BigDecimal decimal) {
+    public boolean greaterOrEqualTo(final BigDecimal decimal) {
         return this.greaterThan(decimal) || this.equalTo(decimal);
     }
 
-    public boolean lessThan(BigDecimal decimal) {
+    public boolean lessThan(final BigDecimal decimal) {
         return this.compareTo(decimal) < 0;
     }
 
-    public boolean lessOrEqualTo(BigDecimal decimal) {
+    public boolean lessOrEqualTo(final BigDecimal decimal) {
         return this.lessThan(decimal) || this.equalTo(decimal);
     }
 
     @Override
-    public Decimal add(BigDecimal augend) {
+    public Decimal add(final BigDecimal augend) {
         return new Decimal(super.add(augend));
     }
 
     @Override
-    public Decimal subtract(BigDecimal augend) {
+    public Decimal subtract(final BigDecimal augend) {
         return new Decimal(super.subtract(augend));
     }
 
     @Override
-    public Decimal multiply(BigDecimal augend) {
+    public Decimal multiply(final BigDecimal augend) {
         return new Decimal(super.multiply(augend));
     }
 
     @Override
-    public Decimal divide(BigDecimal augend) {
+    public Decimal divide(final BigDecimal augend) {
         return new Decimal(super.divide(augend, Decimal.SCALE, RoundingMode.HALF_UP));
     }
 

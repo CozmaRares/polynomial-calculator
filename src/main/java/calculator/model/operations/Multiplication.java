@@ -8,7 +8,7 @@ public class Multiplication {
     private Multiplication() {
     }
 
-    public static Polynomial apply(Polynomial first, Polynomial second) {
+    public static Polynomial apply(final Polynomial first, final Polynomial second) {
         PolynomialBuilder builder = new PolynomialBuilder();
 
         for (int power1 : first.getPowerSet())

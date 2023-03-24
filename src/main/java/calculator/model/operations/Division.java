@@ -10,9 +10,13 @@ public class Division {
     private Division() {
     }
 
-    public static List<Polynomial> apply(Polynomial first, Polynomial second) {
+    public static List<Polynomial> apply(final Polynomial first, final Polynomial second) {
         if (second.getDegree() == -1)
             throw new IllegalArgumentException("Cannot divide by 0");
+
+        if (first.getDegree() < second.getDegree())
+            throw new IllegalArgumentException(
+                    "Cannot divide a polynomial with smaller degree to one with a greater degree");
 
         Polynomial reminder = new Polynomial(first);
         Polynomial quotient = new Polynomial();
@@ -29,7 +33,6 @@ public class Division {
             reminder = Subtraction.apply(reminder, t);
         }
 
-        var c = Arrays.asList(quotient, reminder);
-        return c;
+        return Arrays.asList(quotient, reminder);
     }
 }

@@ -11,27 +11,31 @@ import java.util.regex.Pattern;
 import calculator.utils.Decimal;
 
 public class Polynomial {
-    private final static String unsignedMonomialRegex = "(\\d+(\\.\\d+)?)?x(\\^\\d+)?|\\d+(\\.\\d+)?";
+    private static int COEFFICIENT_GROUP = 1;
+    private static int POWER_GROUP = 4;
+    private static int COEFFICIENT_ONLY_GROUP = 5;
 
-    private final static Pattern monomialPattern = Pattern
-            .compile(String.format("[-+]?(%s)", unsignedMonomialRegex));
+    private final static String unsignedMonomialRegex = "(\\d+(\\.\\d+)?)?x(\\^\\d+)?|(\\d+(\\.\\d+)?)";
+    private final static String monomialRegex = "([-+]?(\\d+(\\.\\d+)?)?)x(\\^\\d+)?|([-+]?\\d+(\\.\\d+)?)";
+    private final static String polynomialRegex = String
+            .format("^-?(%s)([-+](%s))*$", unsignedMonomialRegex, unsignedMonomialRegex);
 
-    private final static Pattern polynomialPattern = Pattern
-            .compile(String.format("^-?(%s)([-+](%s))*$", unsignedMonomialRegex, unsignedMonomialRegex));
+    private final static Pattern monomialPattern = Pattern.compile(monomialRegex);
+    private final static Pattern polynomialPattern = Pattern.compile(polynomialRegex);
 
     private final Map<Integer, Decimal> monomials;
     private final int degree;
 
-    private static void stripTrailingZeros(Map<Integer, Decimal> monomials) {
+    private static void stripTrailingZeros(final Map<Integer, Decimal> monomials) {
         for (var entry : monomials.entrySet())
             entry.setValue(entry.getValue().stripTrailingZeros());
     }
 
-    private static void remove0s(Map<Integer, Decimal> monomials) {
+    private static void remove0s(final Map<Integer, Decimal> monomials) {
         monomials.entrySet().removeIf(e -> e.getValue().equalTo(Decimal.ZERO));
     }
 
-    private static int computeDegree(Map<Integer, Decimal> monomials) {
+    private static int computeDegree(final Map<Integer, Decimal> monomials) {
         int degree = -1;
 
         for (var key : monomials.keySet())
@@ -68,44 +72,32 @@ public class Polynomial {
         Matcher monomialMatcher = monomialPattern.matcher(polynomial);
 
         while (monomialMatcher.find()) {
-            String monomial = monomialMatcher.group();
+            if (monomialMatcher.group(COEFFICIENT_ONLY_GROUP) != null) {
+                int power = 0;
+                Decimal coefficient = new Decimal(monomialMatcher.group(COEFFICIENT_ONLY_GROUP));
 
-            int positionOfX = monomial.indexOf("x");
+                builder.addMonomial(power, coefficient);
 
-            int power;
+                continue;
+            }
+
+            String powerString = monomialMatcher.group(POWER_GROUP) == null
+                    ? "1"
+                    : monomialMatcher.group(POWER_GROUP).substring(1);
+
+            String coefficientString = monomialMatcher.group(COEFFICIENT_GROUP).length() == 0
+                    ? "1"
+                    : monomialMatcher.group(COEFFICIENT_GROUP);
+
+            int power = Integer.parseInt(powerString);
             Decimal coefficient;
 
-            if (positionOfX == -1) {
-                power = 0;
-                coefficient = new Decimal(monomial);
-
-                builder.addMonomial(power, coefficient);
-                continue;
-            }
-
-            String[] numbers = monomial.split("x\\^?");
-
-            if (numbers.length == 0) {
-                power = 1;
+            if (coefficientString.equals("+"))
                 coefficient = Decimal.ONE;
-
-                builder.addMonomial(power, coefficient);
-                continue;
-            }
-
-            String coefficientString = numbers[0];
-
-            if (coefficientString.length() == 0)
-                coefficient = Decimal.ONE;
-            else if (coefficientString.length() == 1 && "+-".indexOf(coefficientString.charAt(0)) != -1) {
-                coefficient = Decimal.ONE;
-
-                if (coefficientString.charAt(0) == '-')
-                    coefficient = coefficient.multiply(Decimal.valueOf(-1));
-            } else
+            else if (coefficientString.equals("-"))
+                coefficient = Decimal.ONE.negate();
+            else
                 coefficient = new Decimal(coefficientString);
-
-            power = numbers.length == 1 ? 1 : Integer.parseInt(numbers[1]);
 
             builder.addMonomial(power, coefficient);
         }
@@ -117,7 +109,7 @@ public class Polynomial {
         return this.monomials.keySet();
     }
 
-    public Decimal getCoefficient(int power) {
+    public Decimal getCoefficient(final int power) {
         return this.monomials.getOrDefault(power, Decimal.ZERO);
     }
 
@@ -170,13 +162,13 @@ public class Polynomial {
             this.monomials = new HashMap<>();
         }
 
-        public void addMonomial(int power, Decimal coefficient) {
-            coefficient = this.getCoefficient(power).add(coefficient);
+        public void addMonomial(final int power, final Decimal coefficient) {
+            Decimal newCoefficient = this.getCoefficient(power).add(coefficient);
 
-            this.monomials.put(power, coefficient);
+            this.monomials.put(power, newCoefficient);
         }
 
-        private Decimal getCoefficient(int power) {
+        private Decimal getCoefficient(final int power) {
             return this.monomials.getOrDefault(power, Decimal.ZERO);
         }
 

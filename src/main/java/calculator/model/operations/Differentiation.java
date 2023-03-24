@@ -8,7 +8,7 @@ public class Differentiation {
     private Differentiation() {
     }
 
-    public static Polynomial apply(Polynomial polynomial) {
+    public static Polynomial apply(final Polynomial polynomial) {
         PolynomialBuilder builder = new PolynomialBuilder();
 
         for (int power : polynomial.getPowerSet()) {

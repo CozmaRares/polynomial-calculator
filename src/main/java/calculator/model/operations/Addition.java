@@ -7,7 +7,7 @@ public class Addition {
     private Addition() {
     }
 
-    public static Polynomial apply(Polynomial first, Polynomial second) {
+    public static Polynomial apply(final Polynomial first,final  Polynomial second) {
         PolynomialBuilder builder = new PolynomialBuilder();
 
         for (int power : first.getPowerSet())
