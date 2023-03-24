@@ -56,15 +56,14 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent event) {
                 try {
-                    Polynomial first = new Polynomial(view.getFirstPolynomialString());
-                    Polynomial second = new Polynomial(view.getSecondPolynomialString());
+                    Polynomial first = Polynomial.fromString(view.getFirstPolynomialString());
+                    Polynomial second = Polynomial.fromString(view.getSecondPolynomialString());
 
                     function.accept(first, second);
                 } catch (IllegalArgumentException exception) {
                     new Popup(exception.getMessage());
                 }
             }
-
         };
     }
 }

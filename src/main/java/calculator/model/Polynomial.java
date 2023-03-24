@@ -46,7 +46,7 @@ public class Polynomial {
         this.degree = Polynomial.computeDegree(this.monomials);
     }
 
-    public Polynomial(final Map<Integer, Decimal> monomials) {
+    private Polynomial(final Map<Integer, Decimal> monomials) {
         this.monomials = new HashMap<>(monomials);
         Polynomial.stripTrailingZeros(this.monomials);
         Polynomial.remove0s(this.monomials);
@@ -57,8 +57,8 @@ public class Polynomial {
         this(p.monomials);
     }
 
-    public Polynomial(final String polynomial) {
-        this.monomials = new HashMap<>();
+    public static Polynomial fromString(final String polynomial) {
+        PolynomialBuilder builder = new PolynomialBuilder();
 
         Matcher polynomialMatcher = polynomialPattern.matcher(polynomial);
 
@@ -79,7 +79,7 @@ public class Polynomial {
                 power = 0;
                 coefficient = new Decimal(monomial);
 
-                this.addMonomial(power, coefficient);
+                builder.addMonomial(power, coefficient);
                 continue;
             }
 
@@ -89,7 +89,7 @@ public class Polynomial {
                 power = 1;
                 coefficient = Decimal.ONE;
 
-                this.addMonomial(power, coefficient);
+                builder.addMonomial(power, coefficient);
                 continue;
             }
 
@@ -107,18 +107,10 @@ public class Polynomial {
 
             power = numbers.length == 1 ? 1 : Integer.parseInt(numbers[1]);
 
-            this.addMonomial(power, coefficient);
+            builder.addMonomial(power, coefficient);
         }
 
-        Polynomial.stripTrailingZeros(this.monomials);
-        Polynomial.remove0s(this.monomials);
-        this.degree = Polynomial.computeDegree(this.monomials);
-    }
-
-    private void addMonomial(int power, Decimal coefficient) {
-        coefficient = this.getCoefficient(power).add(coefficient);
-
-        this.monomials.put(power, coefficient);
+        return builder.build();
     }
 
     public Set<Integer> getPowerSet() {
@@ -169,5 +161,28 @@ public class Polynomial {
         }
 
         return sb.toString();
+    }
+
+    public static class PolynomialBuilder {
+        private final Map<Integer, Decimal> monomials;
+
+        public PolynomialBuilder() {
+            this.monomials = new HashMap<>();
+        }
+
+        public void addMonomial(int power, Decimal coefficient) {
+            coefficient = this.getCoefficient(power).add(coefficient);
+
+            this.monomials.put(power, coefficient);
+        }
+
+        private Decimal getCoefficient(int power) {
+            return this.monomials.getOrDefault(power, Decimal.ZERO);
+        }
+
+        public Polynomial build() {
+            return new Polynomial(this.monomials);
+        }
+
     }
 }

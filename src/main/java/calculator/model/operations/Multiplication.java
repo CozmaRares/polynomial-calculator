@@ -1,8 +1,7 @@
 package calculator.model.operations;
 
-import java.util.HashMap;
-
 import calculator.model.Polynomial;
+import calculator.model.Polynomial.PolynomialBuilder;
 import calculator.utils.Decimal;
 
 public class Multiplication {
@@ -10,19 +9,18 @@ public class Multiplication {
     }
 
     public static Polynomial apply(Polynomial first, Polynomial second) {
-        var result = new HashMap<Integer, Decimal>();
+        PolynomialBuilder builder = new PolynomialBuilder();
 
         for (int power1 : first.getPowerSet())
             for (int power2 : second.getPowerSet()) {
                 int power = power1 + power2;
                 Decimal coefficient = first
                         .getCoefficient(power1)
-                        .multiply(second.getCoefficient(power2))
-                        .add(result.getOrDefault(power, Decimal.ZERO));
+                        .multiply(second.getCoefficient(power2));
 
-                result.put(power, coefficient);
+                builder.addMonomial(power, coefficient);
             }
 
-        return new Polynomial(result);
+        return builder.build();
     }
 }

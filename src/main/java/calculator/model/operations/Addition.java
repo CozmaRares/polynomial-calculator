@@ -1,28 +1,21 @@
 package calculator.model.operations;
 
-import java.util.HashMap;
-
 import calculator.model.Polynomial;
-import calculator.utils.Decimal;
+import calculator.model.Polynomial.PolynomialBuilder;
 
 public class Addition {
     private Addition() {
     }
 
     public static Polynomial apply(Polynomial first, Polynomial second) {
-        var result = new HashMap<Integer, Decimal>();
+        PolynomialBuilder builder = new PolynomialBuilder();
 
         for (int power : first.getPowerSet())
-            result.put(power, first.getCoefficient(power));
+            builder.addMonomial(power, first.getCoefficient(power));
 
-        for (int power : second.getPowerSet()) {
-            Decimal coefficient = result
-                    .getOrDefault(power, Decimal.ZERO)
-                    .add(second.getCoefficient(power));
+        for (int power : second.getPowerSet())
+            builder.addMonomial(power, second.getCoefficient(power));
 
-            result.put(power, coefficient);
-        }
-
-        return new Polynomial(result);
+        return builder.build();
     }
 }

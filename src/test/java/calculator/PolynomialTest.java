@@ -8,12 +8,12 @@ import calculator.model.Polynomial;
 public class PolynomialTest {
     @Test(expected = IllegalArgumentException.class)
     public void firstMonomialStartingWithPlusShouldThrow() {
-        new Polynomial("+2x^2");
+        Polynomial.fromString("+2x^2");
     }
 
     @Test
     public void firstMonomialStartingWithMinusShouldBeAccepted() {
-        var p = new Polynomial("-2x^2");
+        var p = Polynomial.fromString("-2x^2");
 
         assertEquals("-2x^2", p.toString());
         assertEquals(2, p.getDegree());
@@ -21,7 +21,7 @@ public class PolynomialTest {
 
     @Test
     public void firstMonomialWithoutSignShouldBeAccepted() {
-        var p = new Polynomial("2x^2");
+        var p = Polynomial.fromString("2x^2");
 
         assertEquals("2x^2", p.toString());
         assertEquals(2, p.getDegree());
@@ -29,7 +29,7 @@ public class PolynomialTest {
 
     @Test
     public void monomialWithRealCoefficientShouldBeAccepted() {
-        var p = new Polynomial("2.2x^2");
+        var p = Polynomial.fromString("2.2x^2");
 
         assertEquals("2.2x^2", p.toString());
         assertEquals(2, p.getDegree());
@@ -37,7 +37,7 @@ public class PolynomialTest {
 
     @Test
     public void monomialWithoutCoefficientShouldBeAccepted() {
-        var p = new Polynomial("x^2");
+        var p = Polynomial.fromString("x^2");
 
         assertEquals("x^2", p.toString());
         assertEquals(2, p.getDegree());
@@ -45,7 +45,7 @@ public class PolynomialTest {
 
     @Test
     public void monomialWithoutPowerShouldBeAccepted() {
-        var p = new Polynomial("2x");
+        var p = Polynomial.fromString("2x");
 
         assertEquals("2x", p.toString());
         assertEquals(1, p.getDegree());
@@ -53,7 +53,7 @@ public class PolynomialTest {
 
     @Test
     public void monomialWithoutPowerAndWithoutCoefficientShouldBeAccepted() {
-        var p = new Polynomial("x");
+        var p = Polynomial.fromString("x");
 
         assertEquals("x", p.toString());
         assertEquals(1, p.getDegree());
@@ -61,12 +61,12 @@ public class PolynomialTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void coefficientStartingWithPlusShouldThrow() {
-        new Polynomial("+2");
+        Polynomial.fromString("+2");
     }
 
     @Test
     public void coefficientStartingWithMinusShouldBeAccepted() {
-        var p = new Polynomial("-2");
+        var p = Polynomial.fromString("-2");
 
         assertEquals("-2", p.toString());
         assertEquals(0, p.getDegree());
@@ -74,7 +74,7 @@ public class PolynomialTest {
 
     @Test
     public void coefficientWithoutSignShouldBeAccepted() {
-        var p = new Polynomial("2");
+        var p = Polynomial.fromString("2");
 
         assertEquals("2", p.toString());
         assertEquals(0, p.getDegree());
@@ -82,7 +82,7 @@ public class PolynomialTest {
 
     @Test
     public void realCoefficientWithoutSignShouldBeAccepted() {
-        var p = new Polynomial("2.2");
+        var p = Polynomial.fromString("2.2");
 
         assertEquals("2.2", p.toString());
         assertEquals(0, p.getDegree());
@@ -90,7 +90,7 @@ public class PolynomialTest {
 
     @Test
     public void readCoefficientShouldBeStrippedOfZeros() {
-        var p = new Polynomial("2.00");
+        var p = Polynomial.fromString("2.00");
 
         assertEquals("2", p.toString());
         assertEquals(0, p.getDegree());
@@ -98,7 +98,7 @@ public class PolynomialTest {
 
     @Test
     public void strippingZerosFromCoefficientsShouldNotAffectMultiplesOfTen() {
-        var p = new Polynomial("40");
+        var p = Polynomial.fromString("40");
 
         assertEquals("40", p.toString());
         assertEquals(0, p.getDegree());
@@ -106,7 +106,7 @@ public class PolynomialTest {
 
     @Test
     public void polynomialShouldBeCorrectlyParsed() {
-        var p = new Polynomial("x^2+2x+1");
+        var p = Polynomial.fromString("x^2+2x+1");
 
         System.out.println(p);
 
@@ -115,7 +115,7 @@ public class PolynomialTest {
 
     @Test
     public void polynomialWithRealCoefficientShouldBeCorrectlyParsed() {
-        var p = new Polynomial("-x^2+2.2x+1");
+        var p = Polynomial.fromString("-x^2+2.2x+1");
 
         System.out.println(p);
 
@@ -124,16 +124,16 @@ public class PolynomialTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void polynomialContainingConsecutiveSignsShouldThrow() {
-        new Polynomial("x^2++2x+1");
+        Polynomial.fromString("x^2++2x+1");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void polynomialContainingExplicitMultiplicationShouldThrow() {
-        new Polynomial("x^2+2*x+1");
+        Polynomial.fromString("x^2+2*x+1");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void polynomialContainingInvalidPowerShouldThrow() {
-        new Polynomial("x^a+1");
+        Polynomial.fromString("x^a+1");
     }
 }

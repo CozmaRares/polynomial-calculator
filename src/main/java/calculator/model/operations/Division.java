@@ -1,10 +1,10 @@
 package calculator.model.operations;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
 import calculator.model.Polynomial;
+import calculator.utils.Decimal;
 
 public class Division {
     private Division() {
@@ -19,11 +19,11 @@ public class Division {
 
         while (reminder.getDegree() != 0 && reminder.getDegree() >= second.getDegree()) {
             int power = reminder.getDegree() - second.getDegree();
-            BigDecimal coefficient = reminder
+            Decimal coefficient = reminder
                     .getCoefficient(reminder.getDegree())
                     .divide(second.getCoefficient(second.getDegree()));
 
-            Polynomial t = new Polynomial(coefficient + "x^" + power);
+            Polynomial t = Polynomial.fromString(coefficient + "x^" + power);
             quotient = Addition.apply(quotient, t);
             t = Multiplication.apply(t, second);
             reminder = Subtraction.apply(reminder, t);

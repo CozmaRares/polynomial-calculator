@@ -1,8 +1,7 @@
 package calculator.model.operations;
 
-import java.util.HashMap;
-
 import calculator.model.Polynomial;
+import calculator.model.Polynomial.PolynomialBuilder;
 import calculator.utils.Decimal;
 
 public class Differentiation {
@@ -10,7 +9,7 @@ public class Differentiation {
     }
 
     public static Polynomial apply(Polynomial polynomial) {
-        var result = new HashMap<Integer, Decimal>();
+        PolynomialBuilder builder = new PolynomialBuilder();
 
         for (int power : polynomial.getPowerSet()) {
             if (power < 1)
@@ -18,12 +17,11 @@ public class Differentiation {
 
             Decimal coefficient = polynomial
                     .getCoefficient(power)
-                    .multiply(Decimal.valueOf(power))
-                    .add(result.getOrDefault(power, Decimal.ZERO));
+                    .multiply(Decimal.valueOf(power));
 
-            result.put(power - 1, coefficient);
+            builder.addMonomial(power - 1, coefficient);
         }
 
-        return new Polynomial(result);
+        return builder.build();
     }
 }
