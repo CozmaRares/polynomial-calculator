@@ -33,4 +33,13 @@ public class SubtractionTest {
 
         assertEquals("x^5+0.071x^4+3.5x^3-1.343x^2+2x-43", Subtraction.apply(p1, p2).toString());
     }
+
+    @Test
+    public void subtractZeroFromPolynomial() {
+        var p1 = Polynomial.fromString("x^2+2x+1");
+        var p2 = Polynomial.fromString("0");
+
+        assertEquals("x^2+2x+1", Subtraction.apply(p1, p2).toString());
+    }
+
 }

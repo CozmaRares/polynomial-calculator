@@ -33,4 +33,12 @@ public class AdditionTest {
 
         assertEquals("-x^5-0.071x^4-4.5x^3-3.915x^2+47", Addition.apply(p1, p2).toString());
     }
+
+    @Test
+    public void addZeroToPolynomial() {
+        var p1 = Polynomial.fromString("x^2+2x+1");
+        var p2 = Polynomial.fromString("0");
+
+        assertEquals("x^2+2x+1", Addition.apply(p1, p2).toString());
+    }
 }
