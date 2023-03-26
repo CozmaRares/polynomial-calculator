@@ -9,7 +9,7 @@ import calculator.model.operations.Multiplication;
 
 public class MultiplicationTest {
     @Test
-    public void multiplicationWithOne() {
+    public void multiplyPolynomialByOne() {
         var p1 = Polynomial.fromString("x");
         var p2 = Polynomial.fromString("1");
 
@@ -17,7 +17,7 @@ public class MultiplicationTest {
     }
 
     @Test
-    public void multiplicationWithZero() {
+    public void multiplyPolynomialByZero() {
         var p1 = Polynomial.fromString("x^4+8x^3+5.6x^2-x-2.629");
         var p2 = Polynomial.fromString("0");
 

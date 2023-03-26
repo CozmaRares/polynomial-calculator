@@ -9,7 +9,7 @@ import calculator.model.operations.Division;
 
 public class DivisionTest {
     @Test
-    public void divisionByOne() {
+    public void dividePolynomialByOne() {
         var p1 = Polynomial.fromString("x^2+x");
         var p2 = Polynomial.fromString("1");
         var res = Division.apply(p1, p2);
@@ -19,7 +19,7 @@ public class DivisionTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void divisionByZero() {
+    public void dividePolynomialByZero() {
         var p1 = Polynomial.fromString("x^2+x");
         var p2 = Polynomial.fromString("0");
 
@@ -37,7 +37,7 @@ public class DivisionTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void divideByHigherDegree() {
+    public void dividePolynomialByHigherDegree() {
         var p1 = Polynomial.fromString("x");
         var p2 = Polynomial.fromString("x^2");
 
