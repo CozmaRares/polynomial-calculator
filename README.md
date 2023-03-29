@@ -1,11 +1,21 @@
 # Assignment 1 - Polynomial Calculator
 
-## 1. Assignment Objective
+## Contents
+
+1. [Assignment Objective](#assignment-objective)
+2. [Problem Analysis](#problem-analysis)
+3. [Design](#design)
+4. [Implementation](#implementation)
+5. [Results](#results)
+6. [Future Developments](#future-developments)
+7. [Biography](#biography)
+
+## Assignment Objective
 
 Design and implement a polynomial calculator with a dedicated graphical interface through which the
 user can insert polynomials, select the mathematical operation to be performed and view the result.
 
-## 2. Problem Analysis
+## Problem Analysis
 
 ### Functional requirements
 
@@ -88,7 +98,7 @@ user can insert polynomials, select the mathematical operation to be performed a
    __Error scenario:__ a popup window shows the error message
     <br />
 
-## 3. Design
+## Design
 
 ### OOP Design
 
@@ -104,7 +114,7 @@ The main classes that I have identified are:
 * __Set__ Iterator - used to get the key set of the HashMap, i.e. the powers of X from a polynomial
 * __ArrayList__ - used in the toString method of the Polynomial class to print its monomials, sorted descending by power
 
-## 4. Implementation
+## Implementation
 
 ### Structure of the Project
 
@@ -205,7 +215,7 @@ calculator
     * __Description:__
         * wrapper for the BigDecimal class
 
-## 5. Results
+## Results
 
 ### What is tested?
 
@@ -245,13 +255,13 @@ mvn test
 [<span style="color: skyblue">INFO</span>] ------------------------------------------------------------------------
 </pre>
 
-## 6. Future Developments
+## Future Developments
 
 * accept any letter for the variable, not just x
 * add support for negative and real powers
 * better GUI
 * rewrite the app in Rust
 
-## 7. Biography
+## Biography
 
 * [the Mecca of programmers](https://stackoverflow.com/)
