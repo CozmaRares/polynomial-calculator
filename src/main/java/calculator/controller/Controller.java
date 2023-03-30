@@ -33,7 +33,8 @@ public class Controller {
 
         view.setDivideButtonListener(wrapInActionListener((first, second) -> {
             var res = Division.apply(first, second);
-            new Popup("First: " + first, "Second: " + second, "Quotient: " + res.get(0), "Reminder: " + res.get(1));
+            new Popup("First: " + first, "Second: " + second,
+                    "Quotient: " + res.get(0), "Reminder: " + res.get(1));
         }));
 
         view.setIntegrateButtonListener(wrapInActionListener((first, second) -> {

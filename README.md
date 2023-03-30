@@ -108,6 +108,10 @@ The main classes that I have identified are:
 * __Operation__: there should be one class for each operation that is supported
 * __GUI__: 🤮
 
+### UML Diagram
+
+![UML Diagram](./UML.png)
+
 ### Used Data Structures
 
 * __HashMap__ - used in the Polynomial class to store the relevant data
