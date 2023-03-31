@@ -115,7 +115,7 @@ The main classes that I have identified are:
 ### Used Data Structures
 
 * __HashMap__ - used in the Polynomial class to store the relevant data
-* __Set__ Iterator - used to get the key set of the HashMap, i.e. the powers of X from a polynomial
+* __Set__ - used to get the key set of the HashMap, i.e. the powers of X of a polynomial
 * __ArrayList__ - used in the toString method of the Polynomial class to print its monomials, sorted descending by power
 
 ## Implementation
