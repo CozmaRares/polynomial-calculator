@@ -135,7 +135,7 @@ public class Polynomial {
 
             if (coefficient.greaterThan(Decimal.ZERO) && sb.length() != 0)
                 sb.append("+");
-            else if (coefficient.equalTo(Decimal.ONE.negate()))
+            else if (coefficient.equalTo(Decimal.ONE.negate()) && power != 0)
                 sb.append("-");
 
             if (power == 0) {
