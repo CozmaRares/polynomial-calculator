@@ -6,6 +6,14 @@ A polynomial calculator with a user-friendly graphical interface for operations
 like addition, subtraction, multiplication, division, integration, and
 differentiation while also emphasizing testing using JUnit.
 
+## Screenshots
+
+### Divide Two Polynomials
+
+![divide polynomials](./screenshots/divide.png)
+
+![result](./screenshots/result.png)
+
 ## Getting Started
 
 ### Prerequisites
